@@ -89,6 +89,7 @@ class TankManager extends Map<string, Tank> {
 export default class Game extends ResizeableScene3D {
 	public readonly events = new GameEvent();
 	public readonly audioManager = new AudioManager();
+	public readonly loadProgress = new Emittery<{ progress: number }>();
 
 	public player!: TankPlayer;
 	public world!: World;
@@ -111,10 +112,15 @@ export default class Game extends ResizeableScene3D {
 	}
 
 	async preload() {
+		void this.loadProgress.emit('progress', 5);
 		await this.load.preload('tree', '/glb/tree.glb');
+		void this.loadProgress.emit('progress', 15);
 		await this.load.preload('rock', '/glb/rock.glb');
+		void this.loadProgress.emit('progress', 25);
 		await Tank.loadModel(this.load, '/glb/tank.glb');
+		void this.loadProgress.emit('progress', 45);
 		await Explosion.loadModel(this.load, '/glb/fireball.glb');
+		void this.loadProgress.emit('progress', 55);
 	}
 
 	init() {
@@ -158,6 +164,7 @@ export default class Game extends ResizeableScene3D {
 	}
 
 	async create() {
+		void this.loadProgress.emit('progress', 60);
 		this.audioManager.setCamera(this.camera);
 		pointLightBuffer.init(this);
 		this.sun = new Sun(this);
@@ -173,6 +180,7 @@ export default class Game extends ResizeableScene3D {
 			scale: 0.25,
 		});
 
+		void this.loadProgress.emit('progress', 65);
 		const treeModel = (await this.load.gltf('tree')).scenes[0];
 		treeModel.traverse(child => {
 			if (child instanceof THREE.Mesh) {
@@ -195,9 +203,15 @@ export default class Game extends ResizeableScene3D {
 			.addElement(treeModel)
 			.addElement(rockModel);
 
+		void this.loadProgress.emit('progress', 75);
 		this.world = new World(this, chunkLoader, chunkPopulator);
 
 		await this.respawn();
+		void this.loadProgress.emit('progress', 85);
+
+		// Pre-generate the initial chunks around the player so the world is visible before the loading screen lifts
+		await this.world.update();
+		void this.loadProgress.emit('progress', 100);
 
 		// Spawn Bots if Offline Quick Play
 		if (this.config.network instanceof OfflineNetwork) {

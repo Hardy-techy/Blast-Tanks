@@ -17,6 +17,7 @@ export default function GameRenderer() {
 	const { network } = useNetwork();
 	const [game, setGame] = useState<Game>();
 	const [loading, setLoading] = useState(true);
+	const [loadProgress, setLoadProgress] = useState(0);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const audio = useAudio();
 
@@ -34,6 +35,12 @@ export default function GameRenderer() {
 		const { start, stop } = initGame();
 		void start(canvasRef.current!, network!).then(async game => {
 			setGame(game);
+
+			// Subscribe to real loading progress from the game engine
+			game.loadProgress.on('progress', (progress: number) => {
+				setLoadProgress(progress);
+			});
+
 			network?.on('status', status => {
 				if (status === NetworkStatus.Disconnected) {
 					console.log('Disconnected from server, redirecting to home page');
@@ -70,9 +77,10 @@ export default function GameRenderer() {
 	return (
 		<div>
 			<canvas ref={canvasRef} key='game-canvas' />
-			{loading && <LoadingScreen onComplete={() => setLoading(false)} />}
+			{loading && <LoadingScreen progress={loadProgress} onComplete={() => setLoading(false)} />}
 			{game && <GameUi game={game} />}
 			{game && <GameOver game={game} />}
 		</div>
 	);
 }
+

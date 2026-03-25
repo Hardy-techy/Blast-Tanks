@@ -1,40 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 type LoadingScreenProps = {
+    progress: number; // 0-100 from game engine
     onComplete: () => void;
 };
 
-export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
-    const [progress, setProgress] = useState(0);
+export default function LoadingScreen({ progress, onComplete }: LoadingScreenProps) {
     const [phase, setPhase] = useState<'loading' | 'ready' | 'done'>('loading');
 
+    // Once progress reaches 100%, show "ready" briefly then dismiss
     useEffect(() => {
-        const interval = setInterval(() => {
-            setProgress(prev => {
-                if (prev >= 100) {
-                    clearInterval(interval);
-                    return 100;
-                }
-                const increment = prev < 50 ? 4 : prev < 80 ? 6 : 10;
-                return Math.min(prev + increment, 100);
-            });
-        }, 100);
-        return () => clearInterval(interval);
-    }, []);
-
-    // Once 100%, show "ready" briefly then complete
-    useEffect(() => {
-        if (progress === 100 && phase === 'loading') {
+        if (progress >= 100 && phase === 'loading') {
             setPhase('ready');
             setTimeout(() => {
                 setPhase('done');
                 onComplete();
-            }, 1200);
+            }, 800);
         }
     }, [progress, phase]);
 
     if (phase === 'done') return null;
+
+    // Compute display label based on progress
+    const getLabel = () => {
+        if (phase === 'ready') return 'Ready!';
+        if (progress < 20) return 'Loading Models...';
+        if (progress < 55) return 'Loading Assets...';
+        if (progress < 75) return 'Building World...';
+        if (progress < 90) return 'Spawning Tanks...';
+        return 'Generating Terrain...';
+    };
 
     return (
         <motion.div
@@ -80,8 +76,8 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
                 marginBottom: 12,
             }}>
                 <motion.div
-                    animate={{ width: `${progress}%` }}
-                    transition={{ duration: 0.2 }}
+                    animate={{ width: `${Math.min(progress, 100)}%` }}
+                    transition={{ duration: 0.4, ease: 'easeOut' }}
                     style={{
                         height: '100%',
                         borderRadius: 999,
@@ -98,7 +94,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
             }}>
-                {phase === 'loading' ? 'Loading...' : 'Ready!'}
+                {getLabel()}
             </p>
 
             {/* Instructional hints */}
@@ -131,3 +127,4 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         </motion.div>
     );
 }
+
