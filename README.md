@@ -21,14 +21,15 @@ The core of the Blast Tanks economy is the **`$BLAST`** ERC20 utility token. Ins
 Blast Tanks completely eliminates the need for centralized Web2 backends, polling nodes, or external indexers by aggressively leveraging the **Somnia Reactivity SDK** and **Somnia Event Handlers**. We utilize Reactivity in two distinct, powerful ways:
 
 ### 1. On-Chain Reactivity (Smart Contract Automation)
-Our reward distribution is 100% automated on-chain. The `BlastRewarder.sol` contract acts as a native `SomniaEventHandler`. 
+Our reward and escrow distributions are 100% automated on-chain. The `BlastRewarder.sol` contract operates as a native `SomniaEventHandler`. 
 * **The Flow**: When a multiplayer match ends, the game submits the outcome to the `BlastLeaderboard.sol` contract, which emits a `ScoreSubmitted` event. 
-* **The Reactivity**: The Somnia Network's Reactivity Precompile detects this event and *automatically* triggers the `onEvent()` function inside our `BlastRewarder` contract. The rewarder decodes the event topics, calculates the player's total kills, and instantly transfers the exact `$BLAST` token reward into their wallet. **Zero backend servers required.**
+* **The Reactivity (Rewards)**: The Somnia Network's Reactivity Precompile detects this event and *automatically* triggers the `onEvent()` function inside our `BlastRewarder`. It instantly mints and transfers the exact `$BLAST` token reward into the player's wallet. **Zero backend servers required.**
+* **The Reactivity (Wagers)**: High-Stakes `$BLAST` wagers are securely locked in the `BlastWager.sol` escrow contract using on-chain validation to strictly guarantee that the victor receives the massive `$BLAST` payouts instantaneously without lag.
 
 ### 2. Off-Chain Reactivity (Zero-Latency UI Synchronization)
 Our frontend React application utilizes the `@somnia-chain/reactivity` JavaScript SDK to create a buttery-smooth, natively real-time Web3 UX.
 * **Instant Leaderboards**: Rather than using inefficient REST polling, the `LeaderboardTab.tsx` opens a direct WebSocket subscription to the Somnia RPC. The exact millisecond a player's `ScoreSubmitted` event hits the blockchain, the Reactivity SDK pushes the update, natively refreshing the global leaderboard for all connected players worldwide.
-* **Dynamic Wager State**: Our `setupWagerSubscription.ts` architecture tracks `WagerCreated` and `MatchResolved` events seamlessly, updating lobby availability and paying out massive `$BLAST` stakes instantaneously without lag.
+* **Dynamic Wager State**: Our frontend Reactivity architecture tracks `WagerCreated` and `MatchResolved` events seamlessly, instantly updating lobby availability and match states on the screen the moment the blockchain processes the transaction.
 
 ---
 
@@ -40,6 +41,16 @@ Our frontend React application utilizes the `@somnia-chain/reactivity` JavaScrip
 *   **Web3 Integration**: Thirdweb React SDK & Viem
 *   **Real-time Event Architecture**: Somnia Reactivity Framework
 *   **Styling & UI**: TailwindCSS & Framer Motion
+
+---
+
+## 🌐 Blockchain Network Details
+The Blast Tanks Web3 economy is deployed natively on the **Somnia Testnet**:
+- **Network Name**: Somnia Testnet
+- **RPC URL**: `https://dream-rpc.somnia.network`
+- **Chain ID**: `50312`
+- **Currency Symbol**: `STT`
+- **Block Explorer**: `https://somnia-testnet.socialscan.io`
 
 ## 🚀 How to Run Locally
 
