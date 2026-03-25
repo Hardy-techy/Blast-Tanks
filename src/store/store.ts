@@ -103,7 +103,14 @@ export const usePlayerSettings = create(persist<{
 			set({ showMenu });
 		},
 	}),
-	{ name: 'player-storage' },
+	{ 
+		name: 'player-storage',
+		merge: (persisted: any, current: any) => ({
+			...current,
+			...persisted,
+			showMenu: false, // Always start on main menu, never tank customization
+		}),
+	},
 ));
 
 export const useAudio = create(persist<{
