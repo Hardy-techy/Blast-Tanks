@@ -1,0 +1,62 @@
+# Blast Tanks 🚀💥
+
+**Blast Tanks** is a fully decentralized, fast-paced 3D multiplayer Web3 game where you battle against friends and AI bots. Earn rewards, wager tokens, climb the on-chain leaderboard, and unlock premium skins—all powered by the **Somnia Testnet** and its groundbreaking **Reactivity** capabilities.
+
+Play instantly in your browser without any installation.
+
+---
+
+## 🪙 Tokenomics & The `$BLAST` Token ecosystem
+
+The core of the Blast Tanks economy is the **`$BLAST`** ERC20 utility token. Instead of arbitrary faucets, `$BLAST` is injected directly into the ecosystem through hyper-competitive gameplay mechanisms.
+
+1. **Kill-to-Earn Rewards**: Players are financially incentivized to perform well. Every time a player destroys an enemy tank in a multiplayer arena, they are rewarded with 10 `$BLAST` tokens.
+2. **Deflationary High-Stakes Wagers**: Players can stake their earned `$BLAST` in 1v1 Escrow Wagers. The winner of the wager match claims the entire prize pool securely via our `BlastWager.sol` escrow contract.
+3. **Premium NFT Sink**: To combat token inflation, players must spend `$BLAST` tokens to unlock exclusive, high-tier NFT tank skins (e.g., *Matrix*, *Neon*, *Gold*, *Cyber*). The `BlastSkins.sol` contract burns or locks these tokens, acting as a permanent economic sink while granting the user verifiable ownership of their avatar.
+
+---
+
+## ⚡ Somnia Reactivity: A Serverless Web3 Architecture
+
+Blast Tanks completely eliminates the need for centralized Web2 backends, polling nodes, or external indexers by aggressively leveraging the **Somnia Reactivity SDK** and **Somnia Event Handlers**. We utilize Reactivity in two distinct, powerful ways:
+
+### 1. On-Chain Reactivity (Smart Contract Automation)
+Our reward distribution is 100% automated on-chain. The `BlastRewarder.sol` contract acts as a native `SomniaEventHandler`. 
+* **The Flow**: When a multiplayer match ends, the game submits the outcome to the `BlastLeaderboard.sol` contract, which emits a `ScoreSubmitted` event. 
+* **The Reactivity**: The Somnia Network's Reactivity Precompile detects this event and *automatically* triggers the `onEvent()` function inside our `BlastRewarder` contract. The rewarder decodes the event topics, calculates the player's total kills, and instantly transfers the exact `$BLAST` token reward into their wallet. **Zero backend servers required.**
+
+### 2. Off-Chain Reactivity (Zero-Latency UI Synchronization)
+Our frontend React application utilizes the `@somnia-chain/reactivity` JavaScript SDK to create a buttery-smooth, natively real-time Web3 UX.
+* **Instant Leaderboards**: Rather than using inefficient REST polling, the `LeaderboardTab.tsx` opens a direct WebSocket subscription to the Somnia RPC. The exact millisecond a player's `ScoreSubmitted` event hits the blockchain, the Reactivity SDK pushes the update, natively refreshing the global leaderboard for all connected players worldwide.
+* **Dynamic Wager State**: Our `setupWagerSubscription.ts` architecture tracks `WagerCreated` and `MatchResolved` events seamlessly, updating lobby availability and paying out massive `$BLAST` stakes instantaneously without lag.
+
+---
+
+## 🎮 Engine & Technology Stack
+
+*   **Logic & Rendering**: React, Three.js, Enable3d (Ammo.js Physics Engine)
+*   **Multiplayer Networking**: WebRTC (PeerJS) & Advanced Offline AI Bots
+*   **Smart Contracts**: Solidity (Somnia Testnet EVM)
+*   **Web3 Integration**: Thirdweb React SDK & Viem
+*   **Real-time Event Architecture**: Somnia Reactivity Framework
+*   **Styling & UI**: TailwindCSS & Framer Motion
+
+## 🚀 How to Run Locally
+
+You need [Node.js](https://nodejs.org/) installed on your computer.
+
+```bash
+# 1. Install Dependencies
+npm install
+
+# 2. Run the Development Server
+npm run dev
+```
+
+## 📜 Smart Contract Architecture
+
+The game utilizes an interlocking suite of 4 primary contracts deployed to the Somnia Testnet:
+1.  **`BlastLeaderboard.sol`**: An immutable record of player statistics (Kills, Deaths, XP, Matches Played). Emits the critical state events that drive the Reactivity engine.
+2.  **`BlastRewarder.sol`**: The SomniaEventHandler that listens to the Leaderboard and automatically mints/transfers `$BLAST` to killers.
+3.  **`BlastWager.sol`**: A highly secure Escrow contract explicitly managing high-stakes 1v1 multiplayer matches. It locks `$BLAST` upon lobby creation and joins, only paying out upon cryptographic outcome verification.
+4.  **`BlastSkins.sol`**: A token-gated ownership ledger. Verifies a user's `$BLAST` balance, handles the token transfer payment, and permanently unlocks premium in-game 3D models for that wallet address.
