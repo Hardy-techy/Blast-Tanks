@@ -90,7 +90,7 @@ export const usePlayerSettings = create(persist<{
 	setMenu: (showMenu: boolean) => void;
 }>(
 	set => ({
-		showMenu: true,
+		showMenu: false,
 		name: 'Player',
 		tank: 'heig',
 		setName(name: string) {
