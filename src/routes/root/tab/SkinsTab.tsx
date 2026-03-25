@@ -40,7 +40,7 @@ export default function SkinsTab() {
                  return;
             }
 
-            if (SKINS_CONTRACT_ADDRESS === "0x0000000000000000000000000000000000000000") {
+            if ((SKINS_CONTRACT_ADDRESS as string) === "0x0000000000000000000000000000000000000000") {
                 // Not deployed yet
                 setIsOwned(false);
                 return;
@@ -71,13 +71,13 @@ export default function SkinsTab() {
                     }) as bigint;
                     setDynamicPrice(Number(priceWei) / 1e18);
                 } catch(e) {
-                    setDynamicPrice(currentTank.value.price || null);
+                    setDynamicPrice((currentTank.value as any).price || null);
                 }
 
             } catch (e) {
                 console.error("Failed to check ownership", e);
                 setIsOwned(false);
-                setDynamicPrice(currentTank.value.price || null);
+                setDynamicPrice((currentTank.value as any).price || null);
             } finally {
                 setCheckingOwnership(false);
             }
@@ -99,10 +99,10 @@ export default function SkinsTab() {
 	};
 
     const handleBuySkin = async () => {
-        if (!account || !currentTank.value.price) return;
+        if (!account || !(currentTank.value as any).price) return;
         
         try {
-            const actualPrice = dynamicPrice || currentTank.value.price;
+            const actualPrice = dynamicPrice || (currentTank.value as any).price;
             const amountInWei = BigInt(actualPrice * 1e18);
             const blastContract = getBlastTokenContract();
             
@@ -251,7 +251,7 @@ export default function SkinsTab() {
                     disabled={!account || txStatus.includes('...')} 
                     onClick={handleBuySkin}
                 >
-                    {account ? `Unlock for ${dynamicPrice || currentTank.value.price} $BLAST${dynamicPrice && dynamicPrice !== currentTank.value.price ? ' (Live Price!)' : ''}` : 'Wallet Required to Unlock'}
+                    {account ? `Unlock for ${dynamicPrice || (currentTank.value as any).price} $BLAST${dynamicPrice && dynamicPrice !== (currentTank.value as any).price ? ' (Live Price!)' : ''}` : 'Wallet Required to Unlock'}
                 </Button>
             )}
 			

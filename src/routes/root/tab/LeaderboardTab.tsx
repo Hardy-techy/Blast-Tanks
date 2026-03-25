@@ -21,7 +21,7 @@ export default function LeaderboardTab() {
 
     const fetchLeaderboard = async () => {
         try {
-            if (LEADERBOARD_CONTRACT_ADDRESS === "0x0000000000000000000000000000000000000000") {
+            if ((LEADERBOARD_CONTRACT_ADDRESS as string) === "0x0000000000000000000000000000000000000000") {
                 setError("Leaderboard contract not deployed yet. Deploy BlastLeaderboard.sol and update the address in leaderboardContract.ts");
                 setLoading(false);
                 return;
@@ -62,7 +62,7 @@ export default function LeaderboardTab() {
         // Try to set up real-time WebSocket subscription
         const setupReactivity = async () => {
             try {
-                if (LEADERBOARD_CONTRACT_ADDRESS === "0x0000000000000000000000000000000000000000") return;
+                if ((LEADERBOARD_CONTRACT_ADDRESS as string) === "0x0000000000000000000000000000000000000000") return;
 
                 const { SDK: ReactivitySDK } = await import('@somnia-chain/reactivity');
                 const { createPublicClient, webSocket, defineChain } = await import('viem');

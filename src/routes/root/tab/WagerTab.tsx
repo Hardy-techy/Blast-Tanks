@@ -43,7 +43,7 @@ export default function WagerTab() {
     };
 
 	const handleHostWager = async () => {
-        if (WAGER_CONTRACT_ADDRESS === "0x0000000000000000000000000000000000000000") {
+        if ((WAGER_CONTRACT_ADDRESS as string) === "0x0000000000000000000000000000000000000000") {
             setTxStatus("Developer needs to deploy BlastWager contract first.");
             return;
         }
@@ -80,7 +80,7 @@ export default function WagerTab() {
 	};
 
 	const handleJoinWager = async () => {
-         if (WAGER_CONTRACT_ADDRESS === "0x0000000000000000000000000000000000000000") {
+         if ((WAGER_CONTRACT_ADDRESS as string) === "0x0000000000000000000000000000000000000000") {
             setTxStatus("Developer needs to deploy BlastWager contract first.");
             return;
         }
