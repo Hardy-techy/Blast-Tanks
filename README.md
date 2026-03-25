@@ -67,7 +67,7 @@ npm run dev
 ## 📜 Smart Contract Architecture
 
 The game utilizes an interlocking suite of 4 primary contracts deployed to the Somnia Testnet:
-1.  **`BlastLeaderboard.sol`**: An immutable record of player statistics (Kills, Deaths, XP, Matches Played). Emits the critical state events that drive the Reactivity engine.
-2.  **`BlastRewarder.sol`**: The SomniaEventHandler that listens to the Leaderboard and automatically mints/transfers `$BLAST` to killers.
-3.  **`BlastWager.sol`**: A highly secure Escrow contract explicitly managing high-stakes 1v1 multiplayer matches. It locks `$BLAST` upon lobby creation and joins, only paying out upon cryptographic outcome verification.
-4.  **`BlastSkins.sol`**: A token-gated ownership ledger. Verifies a user's `$BLAST` balance, handles the token transfer payment, and permanently unlocks premium in-game 3D models for that wallet address.
+1.  **`BlastLeaderboard.sol`** (`0xc70343667d292c3393491c4008e1bDd7cfe0D495`): An immutable record of player statistics (Kills, Deaths, XP, Matches Played). Emits the critical state events that drive the Reactivity engine.
+2.  **`BlastRewarder.sol`** (`0x1AaaD8e892e8898f32CB2C2beB45Fa713d622907`): The SomniaEventHandler that listens to the Leaderboard and automatically mints/transfers `$BLAST` to killers.
+3.  **`BlastWager.sol`** (`0x6be14c9c3191dF902973124cF61349613397207B`): A highly secure Escrow contract explicitly managing high-stakes 1v1 multiplayer matches. It locks `$BLAST` upon lobby creation and joins, only paying out upon cryptographic outcome verification.
+4.  **`BlastSkins.sol`** (`0xCA3E4d110E33A89dC369e8cA9FD73290e18241Df`): A token-gated ownership ledger. Verifies a user's `$BLAST` balance, handles the token transfer payment, and permanently unlocks premium in-game 3D models for that wallet address.
