@@ -154,7 +154,7 @@ export default function LeaderboardTab() {
                 <svg className="h-12 w-12 mx-auto mb-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <p className="font-bold text-lg text-white">No scores yet!</p>
+                <p className="font-bold text-lg text-gray-900 dark:text-white">No scores yet!</p>
                 <p className="text-sm mt-1">Play a match to be the first on the leaderboard.</p>
             </div>
         );
@@ -163,7 +163,7 @@ export default function LeaderboardTab() {
     return (
         <div className="space-y-3">
             <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-white">Global Leaderboard</h2>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Global Leaderboard</h2>
                 <button
                     onClick={() => { setLoading(true); fetchLeaderboard(); }}
                     className="text-sm text-toonks-orange hover:text-toonks-orangeLight"
@@ -172,7 +172,7 @@ export default function LeaderboardTab() {
                 </button>
             </div>
             <table className="w-full text-left text-sm">
-                <thead className="text-xs uppercase text-gray-400 border-b border-gray-700">
+                <thead className="text-xs uppercase text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
                     <tr>
                         <th className="px-2 py-2">#</th>
                         <th className="px-2 py-2">Player</th>
@@ -191,18 +191,18 @@ export default function LeaderboardTab() {
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ delay: i * 0.05 }}
-                                className={`border-b border-gray-800/50 ${isMe ? 'bg-toonks-orange/20' : ''}`}
+                                className={`border-b border-gray-200/50 dark:border-gray-800/50 ${isMe ? 'bg-toonks-orange/20' : ''}`}
                             >
                                 <td className={`px-2 py-2 font-bold ${i === 0 ? 'text-yellow-500' : 'text-gray-400'}`}>
                                     {i + 1}
                                 </td>
-                                <td className="px-2 py-2 font-mono text-white">
+                                <td className="px-2 py-2 font-mono text-gray-900 dark:text-white">
                                     {truncateAddress(entry.address)}
                                     {isMe && <span className="ml-2 text-xs text-toonks-orange">(you)</span>}
                                 </td>
-                                <td className="px-2 py-2 text-center font-mono text-gray-300">{entry.kills}</td>
-                                <td className="px-2 py-2 text-center font-mono text-gray-300">{entry.deaths}</td>
-                                <td className="px-2 py-2 text-center font-mono text-gray-300">{entry.matches}</td>
+                                <td className="px-2 py-2 text-center font-mono text-gray-700 dark:text-gray-300">{entry.kills}</td>
+                                <td className="px-2 py-2 text-center font-mono text-gray-700 dark:text-gray-300">{entry.deaths}</td>
+                                <td className="px-2 py-2 text-center font-mono text-gray-700 dark:text-gray-300">{entry.matches}</td>
                                 <td className="px-2 py-2 text-right font-bold text-toonks-orange font-mono">{entry.xp}</td>
                             </motion.tr>
                         );
