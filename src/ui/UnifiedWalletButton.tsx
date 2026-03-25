@@ -58,6 +58,18 @@ export default function UnifiedWalletButton() {
                 client={client} 
                 chain={somniaTestnet}
                 theme='dark'
+                connectButton={{
+                    label: 'Connect',
+                    style: {
+                        background: '#131418',
+                        color: '#ffffff',
+                        border: '1px solid #2b2d35',
+                        borderRadius: '12px',
+                        fontWeight: 600,
+                        fontSize: '14px',
+                        padding: '10px 24px',
+                    },
+                }}
                 supportedTokens={{
                     [somniaTestnet.id]: [{
                         address: BLAST_TOKEN_ADDRESS,
