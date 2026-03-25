@@ -11,7 +11,8 @@ Play instantly in your browser without any installation.
 Blast Tanks features highly destructible environments, physics-driven tank mechanics, and an integrated Web3 interface entirely embedded into the game.
 
 *   **Quick Play (Training Grounds)**: Drop instantly into a massive, procedurally generated arena against intelligent AI bots. Great for practicing aim and testing physics without staking tokens.
-*   **Host / Join Multiplayer Lobbies**: Use WebRTC to connect peer-to-peer with friends. Create standard matches for fun, or elevate the stakes by attaching a `$BLAST` token wager to the lobby.
+*   **Free-to-Play Multiplayer**: Host and join casual unranked lobbies with friends or randoms purely for mechanics, fun, and climbing the global leaderboard.
+*   **High-Stakes Wager Multiplayer**: Elevate the stakes by attaching a `$BLAST` token wager to your lobby. The smart contract natively locks combatants' tokens in escrow and automatically pays the winner the entire pool.
 *   **The Garage (Skins & Loadouts)**: A dedicated 3D UI tab where players can view their connected wallet balances, inspect premium NFT skins, purchase them dynamically, and instantly equip them to their active tank.
 *   **Global Leaderboard Tab**: Always accessible from the main menu, directly querying the Somnia blockchain to track the most lethal commanders globally.
 
@@ -29,8 +30,9 @@ Our reward and escrow distributions are 100% automated on-chain. The `BlastRewar
 
 ### 2. Off-Chain Reactivity (Zero-Latency UI Synchronization)
 Our frontend React application utilizes the `@somnia-chain/reactivity` JavaScript SDK to create a buttery-smooth, natively real-time Web3 UX.
-* **Instant Leaderboards**: Rather than using inefficient REST polling, the `LeaderboardTab.tsx` opens a direct WebSocket subscription to the Somnia RPC. The exact millisecond a player's `ScoreSubmitted` event hits the blockchain, the Reactivity SDK pushes the update, natively refreshing the global leaderboard for all connected players worldwide.
-* **Dynamic Wager State**: Our frontend Reactivity architecture tracks `WagerCreated` and `MatchResolved` events seamlessly, instantly updating lobby availability and match states on the screen the moment the blockchain processes the transaction.
+*   **Instant Leaderboards**: Rather than using inefficient REST polling, the `LeaderboardTab.tsx` opens a direct WebSocket subscription to the Somnia RPC. The exact millisecond a player's `ScoreSubmitted` event hits the blockchain, the Reactivity SDK pushes the update, natively refreshing the global leaderboard for all connected players worldwide.
+*   **Dynamic Wager State**: Our frontend Reactivity architecture tracks `WagerCreated` and `MatchResolved` events seamlessly, instantly updating lobby availability and match states on the screen the moment the blockchain processes the transaction.
+*   **Dynamic Skin Ownership**: The UI leverages Reactivity to track minting and token transfers in the `BlastSkins.sol` contract instantly. Players see their newly purchased NFT skins unlock in the Garage without ever hitting refresh.
 
 ---
 
@@ -38,7 +40,7 @@ Our frontend React application utilizes the `@somnia-chain/reactivity` JavaScrip
 
 The core of the Blast Tanks economy is the **`$BLAST`** ERC20 utility token. Instead of arbitrary faucets, `$BLAST` is injected directly into the ecosystem through hyper-competitive gameplay mechanisms.
 
-1. **Kill-to-Earn Rewards**: Players are financially incentivized to perform well. Every time a player destroys an enemy tank in a multiplayer arena, they are rewarded with 10 `$BLAST` tokens.
+1. **Kill-to-Earn Rewards**: Players are financially incentivized to perform well. Every time a player destroys an enemy tank in a multiplayer arena, they are rewarded with 1 `$BLAST` token.
 2. **Deflationary High-Stakes Wagers**: Players can stake their earned `$BLAST` in 1v1 Escrow Wagers. The winner of the wager match claims the entire prize pool securely via our `BlastWager.sol` escrow contract.
 3. **Premium NFT Sink & Dynamic Pricing**: To combat token inflation, players must spend `$BLAST` tokens to unlock exclusive, high-tier NFT tank skins. The `BlastSkins.sol` contract acts as a permanent economic sink. Furthermore, skin prices utilize a **Dynamic Pricing Model**—the smart contract owner can dynamically update the `$BLAST` cost of geometric or neon skins based on rarity, demand, or circulating token supply. 
 
